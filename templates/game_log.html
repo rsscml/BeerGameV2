@@ -1,0 +1,50 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+<div style="text-align:center; clear: both;"><h1> Beer Game 2.0 </h1></div>
+<div style="text-align:center; clear: both;"><h3> Results </h3></div>
+<div style="text-align:center; clear: both;"><a href="{{url_for('home')}}">Home</a></div>
+
+<table class="center">
+  <tr>
+    <th>Player</th>
+    <th>Total Reward</th>
+  </tr>
+
+    <tr>
+        <td>You</td>
+        <td>{{total_user_reward}}</td>
+    </tr>
+
+    <tr>
+        <td>Reinforcement Learning Agent</td>
+        <td>{{total_agent_reward}}</td>
+    </tr>
+
+     <tr>
+        <td>Optimized Base Stock Policy</td>
+        <td>{{total_dfo_reward}}</td>
+    </tr>
+
+</table>
+<hr>
+
+<div style="text-align:center; clear: both;"><h3> User Action Log </h3></div>
+{% for table in user_actions %}
+    {{ table|safe }}
+{% endfor %}
+
+<br>
+<div style="text-align:center; clear: both;"><h3> RL Agent Action Log </h3></div>
+{% for table in agent_actions %}
+    {{ table|safe }}
+{% endfor %}
+
+<br>
+<div style="text-align:center; clear: both;"><h3> Optimized Base Stock Policy Action Log </h3></div>
+{% for table in dfo_actions %}
+    {{ table|safe }}
+{% endfor %}
+
+{% endblock %}

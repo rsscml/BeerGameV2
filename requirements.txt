@@ -1,0 +1,10 @@
+tensorflow
+tensorflow-probability
+scipy
+flask
+flask-session
+forms
+numpy
+pandas
+flask-bootstrap
+hashlib
