@@ -3,7 +3,8 @@ tensorflow-probability
 scipy
 flask
 flask-session
-forms
+flask-wtf
+wtforms
 numpy
 pandas
 flask-bootstrap
