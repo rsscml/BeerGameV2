@@ -8,3 +8,4 @@ wtforms
 numpy
 pandas
 flask-bootstrap
+gym
