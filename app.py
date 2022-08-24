@@ -159,6 +159,11 @@ def init_game():
         user_env = orgym_timeaware.InvManagementLostSalesEnv(mean_demand=mean_demand_param)
         agent_env = orgym_timeaware.InvManagementLostSalesEnv(mean_demand=mean_demand_param)
         dfo_env = orgym_timeaware.InvManagementLostSalesEnv(mean_demand=mean_demand_param)
+        # TD3 timeaware
+        user_env.Train = False
+        agent_env.Train = False
+        dfo_env.Train = False
+
         dfo_policy, _ = optimize_inventory_policy(dfo_env, dfo_func)
         # pickle these -- to be restored in concerned requests
         user_env_pickle = app.config['PROJECT_ROOT'] + str(session["game_id"]) +  "_user_env.pkl"
