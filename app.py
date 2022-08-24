@@ -23,9 +23,8 @@ app.config['SECRET_KEY'] = "beergamev2"
 app.config['PROJECT_ROOT'] = "projects/"
 app.config['LOG_DIRECTORY'] = "log/"
 app.config['MODEL_DIRECTORY'] = "models/"
-app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
-app.config["CACHE_TYPE"] = "null"
 Bootstrap(app)
 Session(app)
 
@@ -138,7 +137,6 @@ def optimize_inventory_policy(env, fun, init_policy=None, method='Powell'):
 def home():
     # displays game info, objective & parameters
     # redirects to init_game
-    session.clear()
     form = HomeForm()
     if form.validate_on_submit():
         return redirect(url_for("init_game"))
