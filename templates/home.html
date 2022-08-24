@@ -3,13 +3,19 @@
 
 {% block content %}
 <div style="text-align:center; clear: both;"><h1> Beer Game 2.0 </h1></div>
-<div style="text-align:center; clear: both; font-weight: bold;"><h3 id="header"> Multi-Echelon Inventory Optimization </h3></div>
-<div style="text-align:center; clear: both; font-weight: bold;"><h4 id="header"> The Beer Game 2.0 Network </h4></div>
+<div style="text-align:center; clear: both; font-weight: bold;"><h3 id="header"> Solving the Multi-Echelon Inventory Optimization using Reinforcement Learning </h3></div>
+<hr>
+<div style="text-align:center; clear: both; font-weight: bold;"><h4 id="header"> Demo Supply Chain Network & Parameters </h4></div>
 
-<div>
-    <img src="{{ url_for('static', filename='SCNetwork.JPG') }}" class="center">
+<div style="text-align:center; clear: both;">
+  <span style="display:inline;">
+      <center><a href="{{ url_for('static', filename='intro.html') }}" target="_blank">Introduction & Game Play Instructions</a></center> &nbsp;
+  </span>
 </div>
 
+<div>
+    <center><img src="{{ url_for('static', filename='SCNetwork.JPG') }}" height="300" width="800"></center>
+</div>
 <hr>
 
 <div style="text-align:center; clear: both;">

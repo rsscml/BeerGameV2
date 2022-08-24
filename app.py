@@ -180,7 +180,7 @@ def init_game():
         session["dfo_env"] = dfo_env_pickle
         session["dfo_policy"] = dfo_policy_pickle
         return redirect(url_for("start_game"))
-    return render_template("initialize_game.html", form=form)
+    return render_template("initialize_game.html", form=form, mean_demand=int(np.random.normal(loc=20,scale=5)))
 
 
 @app.route("/start_game", methods=['GET','POST'])
@@ -207,16 +207,19 @@ def start_game():
         agent_init_state = agent_env.reset()
         dfo_init_state = dfo_env.reset()
 
-    state_dict["Week no."] = user_env.period + 1
+    state_dict["Current Period no."] = user_env.period + 1
     state_dict["Retailer Inventory"] = user_env.I[user_env.period, 0]
     state_dict["Wholesaler Inventory"] = user_env.I[user_env.period, 1]
     state_dict["Distributor Inventory"] = user_env.I[user_env.period, 2]
     state_dict["Last Period's Demand"] = user_env.D[max(user_env.period-1,0)]
-    state_dict["Current & Future Demand Estimate"] = user_env.demand_forecast[user_env.period:].tolist()
-    state_dict["Inbound Inventory (Retailer)"] = user_env.T[user_env.period, 0]
-    state_dict["Inbound Inventory (Wholesaler)"] = user_env.T[user_env.period, 1]
-    state_dict["Inbound Inventory (Distributor)"] = user_env.T[user_env.period, 2]
-    state_dict["Last Period's Profit"] = user_env.P[max(user_env.period-1,0)]
+    state_dict["Current & Future Demand Estimate"] = user_env.demand_forecast[user_env.period:user_env.period+10].tolist()
+    state_dict["Last Period's Retailer Order (Actualized)"] = user_env.R[max(user_env.period-1,0), 0]
+    state_dict["Last Period's Wholesaler Order (Actualized)"] = user_env.R[max(user_env.period-1,0), 1]
+    state_dict["Last Period's Distributor Order (Actualized)"] = user_env.R[max(user_env.period-1,0), 2]
+    state_dict["Current Period Inbound Inventory (Retailer)"] = user_env.T[user_env.period, 0]
+    state_dict["Current Period Inbound Inventory (Wholesaler)"] = user_env.T[user_env.period, 1]
+    state_dict["Current Period Inbound Inventory (Distributor)"] = user_env.T[user_env.period, 2]
+    state_dict["Last Period's Profit"] = np.around(user_env.P[max(user_env.period-1,0)],1)
     print(" user init state: ", user_env.state)
     print(" agent init state: ", agent_env.state)
     print(" dfo init state: ", dfo_env.state)

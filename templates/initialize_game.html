@@ -5,14 +5,15 @@
 <div style="text-align:center; clear: both;"><h1> Beer Game 2.0 </h1></div>
 
 <form method="POST">
-    <div style="text-align:center; clear: both;"><h2> Set Game Parameters </h2></div>
+    <div style="text-align:center; clear: both;"><h2> Initializing Random Customer Demand Generator </h2></div>
+    <div style="text-align:center; clear: both; font-style:italic"><h5> Demand is simulated using a Poisson Distribution with specified mean </h5></div>
     <div style="text-align:center; clear: both;"><a href="{{url_for('home')}}">Home</a></div>
     <br>
     <hr>
     {{ form.csrf_token }}
     {{ wtf.form_field(form.GameName) }}
-    {{ wtf.form_field(form.PlanningPeriods) }}
-    {{ wtf.form_field(form.MeanCustomerDemand) }}
+    {{ wtf.form_field(form.PlanningPeriods, readonly="readonly" , value=30) }}
+    {{ wtf.form_field(form.MeanCustomerDemand, readonly="readonly" , value=mean_demand) }}
     <center>
     {{ wtf.form_field(form.submit, button_map={'submit':'primary'}) }}
     </center>

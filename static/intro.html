@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Beer Game 2.0 Introduction</title>
+</head>
+
+<body>
+
+<div style="text-align:center; clear: both;"><h1> Beer Game 2.0 </h1></div>
+<div style="text-align:center; clear: both;"><h3> Introduction & Game Instructions </h3></div>
+<hr>
+<p>
+    The original <a href="https://en.wikipedia.org/wiki/Beer_distribution_game" target="_blank">Beer Game</a> was designed to illustrate the bullwhip effect caused
+    by lack of co-ordination & information sharing between the supply chain partners; independent decision making by
+    each of the network participants resulted in either too much stock or frequent out-of-stock situations across all the tiers.
+    Integrated supply chain systems (such as in our SAP landscapes) help alleviate this problem to some extent.
+</p>
+<h3>Context</h3>
+<p>
+    But a bigger question arises - even with full, near real-time supply network visibility & all the data at our disposal,
+    are we able to make optimal inventory management decisions? These decisions are often framed as mathematical problems
+    (Linear or Mixed Integer Linear Programming equations) with a large assortment of variables & solved using specialized
+    (& expensive) solvers like Gurobi or Cplex. Even then, optimal solutions are not guaranteed due to various factors: uncertainty
+    inherent in real world, gaps in master data maintenance, technical reasons (like resource insufficiency), too many
+    deterministic assumptions while framing the LP/MILP problem etc.
+</p>
+<p>
+    In practice, much simpler, heuristic based methods are employed to solve these problems which may work fine in limited complexity
+    environments but don't come close to the optimum solution when faced with multi-echelon networks with many sources of uncertainty.
+</p>
+<h3>Reinforcement Learning - a third (better) option?</h3>
+<p>
+    The key requirements for any inventory optimization solution are these: Accurate, Adaptive (to day-to-day operational uncertainties),
+    Scalable (to complex networks, large no.of SKUs), Fast (be able to run daily or even many times a day), Resource-efficient (shouldn't
+    require a farm of servers to run) &, preferably, Cheap (unlike Gurobi with $10,000 for a single local machine license!).
+    Reinforcement Learning (RL) has the potential to meet all these requirements.
+</p>
+<h3>The Game</h3>
+<p>
+    Beer Game 2.0 is designed to demonstrate the capability of RL for inventory optimization in a multi-echelon setting.
+    There are 3 players in this game: You, a pre-trained RL agent (implemented as Deep Neural Networks) &, an Optimized Base Stock Policy (this method performs
+    an optimization at the start of each game to figure out optimum stock levels at each tier & tries to maintain those levels through out the game duration).
+</p>
+<p>
+    <b>The Network: </b>
+    <ul>
+    <li>There are 4 stages/Tiers. Stage 0 - Retailer, Stage 1 - Wholesaler, Stage 2 - Distributor, Stage 3 - Manufacturer.</li>
+    <li>Customer Demand (which is uncertain) is met by the Retailer who replenishes its inventory by re-ordering from the Wholesaler,
+        the Wholesaler in turn re-orders from the Distributor & so on.</li>
+    <li>The chain ends with the Manufacturer who can supply a maximum of 80 Beer Cases every day with a lead time of 10 days.</li>
+    <li>The Distributor can supply a maximum of 90 cases to the Wholesaler per period with a lead time of 5 days.</li>
+    <li>The Wholesaler can supply a maximum of 100 cases to the Retailer per day with a lead time of 3 days.</li>
+    <li>The Retailer's re-order cost is $1.5 per case & the selling price is $2. It costs the Retailer $0.15/day to stock a case.</li>
+    <li>The Wholesaler's re-order cost is $1.0 per case & the selling price is $1.5. It costs the Wholesaler $0.10/day to stock a case.</li>
+    <li>The Distributor's re-order cost is $0.075 per case & the selling price is $1.0. It costs the Distributor $0.05/day to stock a case.</li>
+    <li>The Manufacturer's production cost is $0.50 per case & the selling price is $0.75. The Manufacturer doesn't carry inventory.</li>
+    <li>In the current version, backorders are not accepted at any stage i.e. any shortfall in order fulfillment is considered lost sales.</li>
+    <li>Lost Sales incur a Goodwill cost of $0.10, $0.075, $0.05, $0.025 respectively for stages 0 through 3.</li>
+    <li>At the start of the game, each stage (excluding Manufacturer) carries some inventory. As the orders come in from the level below, they are fulfilled to the best of the ability.</li>
+    <li>The Player must decide the re-oder quantity for each stage in every period. If the re-order quantity exceeds inventory/supply capacity of the supplying stage, re-order is truncated to max. qty available.</li>
+</ul>
+</p>
+<p>
+    <b>Objective: </b>
+    <ul>
+    <li>Player must try to maximize the aggregate Profit of the entire supply chain over a planning horizon of 30 days.</li>
+    <li>Profit per period is calculated as: sum of revenues (qty*sp) across all stages minus sum of all incurred costs (holding, re-ordering, lost sales penalty) across all stages. </li>
+    <li>A discounting factor of 3% is applied to profits from each successive period i.e Profits in later periods count for less.</li>
+    <li>A backorder enabled version of the game will be made available soon.</li>
+    <li>The two other players, RL Agent & Base Stock Policy, will play alongside you in the background in the exact replica of your environment i.e. they'll have same starting inventory & face same demand per period as you.</li>
+    <li>At the end, Results will be displayed for all three players along with their action logs.</li>
+</ul>
+</p>
+<p>
+    <b>Observations: </b>
+    <ul>
+    <li>To help you make informed decisions, the state of the network at the start of each period will be displayed along with a reference table of costs & capacities parameters.</li>
+    <li>As part of "Observations", you'll have data on current inventory level at each stage, inbound (pipeline) inventory due in the current period, demand forecast for future periods, previous periods action & profit.</li>
+</ul>
+</p>
+<p>
+    <b>Some Guidelines: </b>
+    <ul>
+    <li>Try to figure out a generalizable strategy rather than rely on discretionary action in every period; it would be tiresome otherwise!</li>
+    <li>Play multiple games, say, a best of 3 or best of 5. With every new game the demand distribution will be different to prevent memorization.</li>
+    <li>If the demand parameter doesn't change with the launch of a new game, close the tab & start again.</li>
+</ul>
+</p>
+<p>
+    <b>Thoughts & Feedback: </b>
+    <ul>
+    <li>How much time did you spend perfecting your strategy for this 1 SKU, 4 stage network?</li>
+    <li>Would your strategy scale to a 1000 SKUs in a 10 node distribution network? What infrastructure would be required to accomplish this?</li>
+    <li>If sources of uncertainty increase (e.g. variable supply at each stage, variable lead time etc.) would the strategy still work?</li>
+    <li>The RL agent is a pre-trained one. It was trained on a similar network with a mean customer demand of 20. Does this agent keep up its performance even when mean demand keeps changing randomly?</li>
+    <li>The Optimized Base Stock Policy can do a commendable job but it needs to be re-solved for each game unlike the pre-built RL agent.</li>
+    <li>Any other prescriptive analytics use cases you can think of which might benefit from Reinforcement Learning?</li>
+</ul>
+</p>
+
+</body>
+
+</html>

@@ -5,13 +5,13 @@
 <div style="text-align:center; clear: both;"><h1> Beer Game 2.0 </h1></div>
 <div style="text-align:center; clear: both;"><a href="{{url_for('home')}}">Home</a></div>
 
-<div style="text-align:center; clear: both;"><h2> Period {{state.get("Week no.")}} Begin State </h2></div>
+<div style="text-align:center; clear: both;"><h2> Period {{state.get("Current Period no.")}} Begin State </h2></div>
 
 <div>
 <div style="float:left">
 <table class="center">
   <tr>
-    <th>Parameter</th>
+    <th>Observations</th>
     <th>Value</th>
   </tr>
   {% for k, v in state.items() %}
@@ -25,11 +25,11 @@
 </div>
 
 <div style='float:right'>
-    <img src="{{ url_for('static', filename='NetworkCosts.JPG') }}" height="200" width="400">
+    <img src="{{ url_for('static', filename='NetworkCosts.JPG') }}" height="250" width="500">
 </div>
 </div>
 
-<div style="text-align:center; clear: both;"><h2> Enter Actions For the Current Period </h2></div>
+<div style="text-align:center; clear: both;"><h2> Enter Actions For Current Period </h2></div>
 <br>
 <form method="POST">
     {{ form.csrf_token }}

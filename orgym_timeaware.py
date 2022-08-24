@@ -401,6 +401,7 @@ class InvManagementMasterEnv(gym.Env):
 
         # demand is realized
         if self.dist < 5:
+            np.random.seed(self.period)
             D0 = self.demand_forecast[n] + int(np.random.normal()*self.forecast_bias*self.demand_forecast[n])
             # self.demand_dist.rvs(**self.dist_param)
         else:
