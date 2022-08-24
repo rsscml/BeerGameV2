@@ -9,3 +9,4 @@ numpy
 pandas
 flask-bootstrap
 gym
+joblib
